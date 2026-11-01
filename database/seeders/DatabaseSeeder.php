@@ -15,7 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Containers run migrate --seed on every start so only seed an empty database
+        if (User::query()->exists()) {
+            return;
+        }
 
         User::factory()->create([
             'name' => 'Test User',
