@@ -19,6 +19,19 @@ services:
       # The first start runs composer install, which can take a while.
       start_period: 5m
 
+  queue:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    # just start the worker.
+    entrypoint: ["php", "artisan", "queue:work", "--tries=3"]
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+
   web:
     image: nginx:1.27-alpine
     ports:

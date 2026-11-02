@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Enums\JobStatus;
+use App\Jobs\NotifyInstallerJobReady;
 use App\Models\OrderJob;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,11 @@ class ChangeJobStatus
 
             $job->recordStatusChange($from, $to, $user);
             $job->order->syncStatus();
+
+            if ($to === JobStatus::ReadyForInstallation) {
+                // Only queue it once the change is committed; a rollback shouldn't notify anyone
+                NotifyInstallerJobReady::dispatch($job)->afterCommit();
+            }
 
             return $job;
         });
