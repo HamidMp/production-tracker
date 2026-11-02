@@ -31,4 +31,9 @@ class User extends Authenticatable
             'role' => UserRole::class,
         ];
     }
+
+    public function hasAnyRole(UserRole ...$roles): bool
+    {
+        return in_array($this->role, $roles, true);
+    }
 }
