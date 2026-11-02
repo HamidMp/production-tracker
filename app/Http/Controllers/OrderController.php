@@ -37,4 +37,11 @@ class OrderController extends Controller
     {
         return new OrderResource(Order::query()->create($request->validated()));
     }
+
+    public function show(Order $order): OrderResource
+    {
+        Gate::authorize('view', $order);
+
+        return new OrderResource($order->load('jobs.installer'));
+    }
 }

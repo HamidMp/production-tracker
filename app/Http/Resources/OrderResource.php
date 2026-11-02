@@ -20,6 +20,7 @@ class OrderResource extends JsonResource
             'address' => $this->address,
             'status' => $this->status,
             'jobs_count' => $this->whenCounted('jobs'),
+            'jobs' => OrderJobResource::collection($this->whenLoaded('jobs')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

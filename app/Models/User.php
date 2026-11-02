@@ -36,4 +36,9 @@ class User extends Authenticatable
     {
         return in_array($this->role, $roles, true);
     }
+
+    public function isInstaller(): bool
+    {
+        return $this->role === UserRole::Installer;
+    }
 }
