@@ -1,0 +1,86 @@
+### Requests for VS Code REST Client (or PhpStorm's HTTP client)
+### Run "login" first; the other requests reuse its token
+### Demo users: admin@, planner@, installer1@, installer2@example.com, password "password"
+
+@baseUrl = http://localhost:8000/api
+
+# @name login
+POST {{baseUrl}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "planner@example.com",
+    "password": "password"
+}
+
+###
+@token = {{login.response.body.token}}
+
+### Current user
+GET {{baseUrl}}/user
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List orders (filter + pagination)
+GET {{baseUrl}}/orders?status=in_progress&per_page=5
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Create an order
+POST {{baseUrl}}/orders
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "customer_name": "Maryam Rahimi",
+    "customer_phone": "09121234567",
+    "address": "Tehran, Valiasr St, No. 12"
+}
+
+### Order with its jobs
+GET {{baseUrl}}/orders/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Add a job to an order
+POST {{baseUrl}}/orders/1/jobs
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Kitchen wall cabinets",
+    "installer_id": 3
+}
+
+### List jobs (installers only get their own)
+GET {{baseUrl}}/jobs?status=assembly&per_page=10
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### One job
+GET {{baseUrl}}/jobs/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Move a job to the next stage
+PATCH {{baseUrl}}/jobs/1/status
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "status": "cutting"
+}
+
+### Status history of a job
+GET {{baseUrl}}/jobs/1/history
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Jobs per stage
+GET {{baseUrl}}/reports/jobs-per-status
+Accept: application/json
+Authorization: Bearer {{token}}
