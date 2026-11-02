@@ -16,8 +16,9 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
-      # The first start runs composer install, which can take a while.
-      start_period: 5m
+      # The first start runs composer install and the migrations, which can take several minutes (bind mounts on Docker Desktop for Windows are slow)
+      # Failures during this window don't count; the container turns healthy as soon as php-fpm answers
+      start_period: 15m
 
   queue:
     build:
