@@ -1,4 +1,4 @@
-### Requests for VS Code REST Client (or PhpStorm's HTTP client)
+### Requests for the VS Code REST Client extension (humao.rest-client)
 ### Run "login" first; the other requests reuse its token
 ### Demo users: admin@, planner@, installer1@, installer2@example.com, password "password"
 
@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ###
-@token = {{login.response.body.token}}
+@token = {{login.response.body.$.token}}
 
 ### Current user
 GET {{baseUrl}}/user
