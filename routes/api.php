@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\JobsPerStatusReportController;
 use App\Http\Controllers\JobStatusController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderJobController;
@@ -22,4 +23,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/jobs/{job}', [OrderJobController::class, 'show']);
     Route::get('/jobs/{job}/history', [JobStatusController::class, 'index']);
     Route::patch('/jobs/{job}/status', [JobStatusController::class, 'update']);
+
+    Route::get('/reports/jobs-per-status', JobsPerStatusReportController::class);
 });
