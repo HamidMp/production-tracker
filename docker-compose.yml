@@ -3,16 +3,11 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
+    # App config comes from .env (created from .env.example on first start). It is not
+    # set here on purpose: real environment variables would override phpunit.xml and
+    # make the tests run against the dev database.
     volumes:
       - .:/var/www/html
-    environment:
-      DB_CONNECTION: pgsql
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_DATABASE: production_tracker
-      DB_USERNAME: tracker
-      DB_PASSWORD: secret
-      LOG_CHANNEL: stderr
     depends_on:
       db:
         condition: service_healthy
