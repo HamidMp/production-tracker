@@ -40,6 +40,10 @@ class Order extends Model
      */
     public function syncStatus(): void
     {
+        // two jobs of the same order can change at the same time
+        // locking the order row makes those transactions take turns here, so the last one sees every job's status
+        static::query()->lockForUpdate()->find($this->id);
+
         $statuses = $this->jobs()->pluck('status');
 
         $this->status = match (true) {
